@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AlumnoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('inicio', [HomeController::class, 'inicio']);
+
+Route::resource('alumnos', AlumnoController::class);
