@@ -15,9 +15,8 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        $alumnos = DB::table('alumnos')->get();
-       // $alumnos = Alumno::all();
-       // return json_decode($alumnos);
+        //$alumnos = DB::table('alumnos')->get();
+        $alumnos = Alumno::paginate(2);
         return view('alumnos.index', compact('alumnos'));
 
     }
@@ -29,7 +28,7 @@ class AlumnoController extends Controller
      */
     public function create()
     {
-        //
+        return view('alumnos.create');
     }
 
     /**
@@ -40,7 +39,9 @@ class AlumnoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $alumnos = request()->except('_token');
+        Alumno::insert($alumnos);
+        return redirect (route('alumnos.index'));
     }
 
     /**
@@ -83,8 +84,12 @@ class AlumnoController extends Controller
      * @param  \App\Models\alumno  $alumno
      * @return \Illuminate\Http\Response
      */
-    public function destroy(alumno $alumno)
+    public function destroy($id)
+   
     {
         //
+        Alumno::destroy($id);
+        return redirect('alumnos');
+
     }
 }
