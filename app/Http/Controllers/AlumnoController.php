@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\alumno;
-use Illuminate\Http\Request;
 use DB;
+use App\Models\Alumno;
+use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
 {
@@ -15,10 +14,10 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        //$alumnos = DB::table('alumnos')->get();
-        $alumnos = Alumno::paginate(2);
-        return view('alumnos.index', compact('alumnos'));
-
+       $alumnos = Alumno::paginate(4);
+       return view('alumnos.index',compact(
+        'alumnos'));  
+    
     }
 
     /**
@@ -39,7 +38,7 @@ class AlumnoController extends Controller
      */
     public function store(Request $request)
     {
-        $alumnos = request()->except('_token');
+        $alumnos= request()->except('_token');
         Alumno::insert($alumnos);
         return redirect (route('alumnos.index'));
     }
@@ -47,10 +46,10 @@ class AlumnoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\alumno  $alumno
+     * @param  \App\Models\Alumno  $alumno
      * @return \Illuminate\Http\Response
      */
-    public function show(alumno $alumno)
+    public function show(Alumno $alumno)
     {
         //
     }
@@ -58,38 +57,38 @@ class AlumnoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\alumno  $alumno
+     * @param  \App\Models\Alumno  $alumno
      * @return \Illuminate\Http\Response
      */
-    public function edit(alumno $alumno)
+    public function edit($id)
     {
-        //
+       $alumnos=Alumno::findorFail($id);
+        return view ('alumnos.edit', compact('alumnos'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\alumno  $alumno
+     * @param  \App\Models\Alumno  $alumno
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, alumno $alumno)
+    public function update( Request $request, $id)
     {
-        //
+      $alumnos=request()->except(['_token','_method']);
+      Alumno::where('id','=',$id)->update($alumnos);
+        return redirect ('alumnos');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\alumno  $alumno
+     * @param  \App\Models\Alumno  $alumno
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-   
     {
-        //
         Alumno::destroy($id);
         return redirect('alumnos');
-
     }
 }
